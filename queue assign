@@ -1,0 +1,108 @@
+#include <iostream>
+#define MAX 50
+using namespace std;
+
+int front = 0, rear = 0; // Initialize rear to -1 for correct indexing
+int q[MAX]; // Fixed-size array
+
+void insert_rear(int no, int max_size) {
+    if (rear == max_size - 1) {  // Changed condition to check for overflow
+        cout << "Queue is overflow\n";
+    } else {
+        rear++;
+        q[rear] = no;
+        if (front == 0) // Adjust front on first insertion
+            front = 1;  
+    }			
+}
+
+void insert_front(int no) {
+    if (front == 0) { // Check if there's space to insert at the front
+        cout << "Cannot add number to front end\n";
+        return;
+    } else {
+        front--;
+        q[front] = no;
+    }
+}
+
+void delete_rear() {
+    if (rear == 0) { // Check for empty queue
+        cout << "Cannot delete value at rear end\n";
+        return;
+    } else {
+        int no = q[rear];
+        rear--;
+        cout << "Deleted number is " << no << "\n";
+        if (rear < front) { // Reset indices if the queue is empty
+            front = 0;
+            rear = 0;	
+        }
+    }
+}
+
+void delete_front() {
+    if (front == 0) {	
+        cout << "Queue is Underflow\n";
+        return;
+    } else {
+        int no = q[front];
+        cout << "Deleted element is " << no << "\n";
+        front++;
+        if (front > rear) { // Reset indices if the queue is empty
+            front = 0;
+            rear = 0;
+        }
+    }
+}
+
+void display() {
+    if (rear == 0) {
+        cout << "Queue is empty\n";
+    } else {
+        cout << "Queue elements: ";
+        for (int i = front; i <= rear; i++) {
+            cout << q[i] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    int n, num, ch, choice;
+    cout << "Enter size : ";
+    cin >> n;
+
+    
+    do {
+        cout << "1. Insert at rear end\n2. Insert at front end\n3. Delete at rear end\n4. Delete at front end\n5. Display queue\n";
+        cin >> ch;
+        switch(ch) {
+            case 1:
+                cout << "Enter number: ";
+                cin >> num;
+                insert_rear(num, n); // Pass the max size
+                break;
+            case 2:
+                cout << "Enter number: ";
+                cin >> num;
+                insert_front(num);
+                break;
+            case 3:
+                delete_rear();
+                break;
+            case 4:
+                delete_front();
+                break;
+            case 5:
+                display(); // Call the display function
+                break;
+            default:
+                cout << "Invalid choice\n";
+        }
+        cout << "Press 1 to continue, any other key to exit: ";
+        cin >> choice;
+    } while (choice == 1);
+
+    return 0;
+} 
